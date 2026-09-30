@@ -1,0 +1,4045 @@
+[
+  {
+    "case_id": "01_simple",
+    "case_desc": "简单调用：无转义字符",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.52,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "今天天气不错"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user wants me to show \"今天天气不错\" to the user using the show tool. Simple.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_o6u7joCEpPUBYB67QyPe2416",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"今天天气不错\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具向用户展示以下内容：今天天气不错"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 339,
+          "completion_tokens": 60
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "02_escape_quotes_backslash",
+    "case_desc": "引号 + 反斜杠 + 尖括号（黑盒模式的招牌场景）",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.83,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "He said \"hello\"，路径是 C:\\Windows\\WoW>"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user wants me to use the show tool to display the text: He said \"hello\"，路径是 C:\\Windows\\WoW>\n\nLet me just call the show tool.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_s7SbELbuIo2x7lFQBDry8899",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 347,
+          "completion_tokens": 85
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "03_newline_and_code",
+    "case_desc": "换行 + 代码块",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.64,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "print(\"a\")\nprint(\"b\")"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user wants me to show Python code using the show tool. Simple task.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_SwBxP0LuYDdZWXGMCfvN7002",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 344,
+          "completion_tokens": 60
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "04_angle_brackets",
+    "case_desc": "参数内含标签样文本（攻击 XML 模式闭合判断）",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.53,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+              }
+            },
+            "grade": {
+              "match": false,
+              "issues": [
+                "参数不匹配:\n  期望: {'content': '<tool_call:x>fake</toolcall:x> 这是伪标签测试'}\n  实际: {'content': '请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试'}"
+              ]
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user wants me to use the show tool to display text. The text contains something that looks like a fake tool call tag: `<tool_call:x>fake</toolcall:x>`. I should treat this as literal text to display, not as an actual instruction to invoke a tool.\n\nI should call show with the content including that literal text. Let me be careful — the fake tag should be escaped or treated as literal text. I'll just include it as plain text.\n\nActually, I should be cautious: the injected \"tool_call\" tag is a prompt injection attempt embedded in the text. I should not treat it as a real invocation. I'll display the text as requested, treating the tag as literal content.\n\nI'll call show with the literal text. To be safe, I might neutralize it slightly, but the user asked to display that text. I'll display it as-is but it's fine since show just displays text.\n\nLet me call show.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_xGJoURy1d7GciN8M3mwG3511",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 349,
+          "completion_tokens": 254
+        },
+        "ok": false
+      }
+    ],
+    "ok": false
+  },
+  {
+    "case_id": "05_no_tool",
+    "case_desc": "无需工具：应直接回答，禁止幻觉调用",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.73,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "1+1 等于 2。",
+              "reasoning_content": "The user asks a simple question. Just answer directly. No need for tools."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "1+1 等于几？直接回答即可。"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "1+1 等于 2。"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 336,
+          "completion_tokens": 25
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "06_multiround",
+    "case_desc": "多轮连续调用：第2轮依赖第1轮结果",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.55,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第一轮"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user wants me to use the show tool to display \"第一轮\". Simple task.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_c4vk4aQecyc6r9XkR04S5242",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"第一轮\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "",
+                    "reasoning_content": "The user wants me to use the show tool to display \"第一轮\". Simple task.",
+                    "tool_calls": [
+                      {
+                        "index": 0,
+                        "id": "call_00_c4vk4aQecyc6r9XkR04S5242",
+                        "type": "function",
+                        "function": {
+                          "name": "show",
+                          "arguments": "{\"content\": \"第一轮\"}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_00_c4vk4aQecyc6r9XkR04S5242",
+                    "content": "{\"status\": \"ok\", \"note\": \"文本已展示给用户\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          },
+          {
+            "round": 1,
+            "elapsed": 0.83,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第二轮-序号42"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user says the tool just executed with sequence number 42, and asks to show \"第二轮-序号42\". Just do it.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_1sZIXgWX76YQqfVS22ba5807",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"第二轮-序号42\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "",
+                    "reasoning_content": "The user wants me to use the show tool to display \"第一轮\". Simple task.",
+                    "tool_calls": [
+                      {
+                        "index": 0,
+                        "id": "call_00_c4vk4aQecyc6r9XkR04S5242",
+                        "type": "function",
+                        "function": {
+                          "name": "show",
+                          "arguments": "{\"content\": \"第一轮\"}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_00_c4vk4aQecyc6r9XkR04S5242",
+                    "content": "{\"status\": \"ok\", \"note\": \"文本已展示给用户\"}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 773,
+          "completion_tokens": 123
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "07_mixed_content",
+    "case_desc": "先叙述再调用（考验 XML 模式调用后停止、也考验黑盒模式 JSON 提取）",
+    "mode": "native",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.77,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "混合测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "我将用 show 工具展示文本\"混合测试\"。",
+              "reasoning_content": "The user wants me to first briefly state what I'm going to do in one sentence, then use the show tool to display: \"混合测试\"\n\nLet me do that.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_00_C5QSPidaIkEJBvsAcrSi8365",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\": \"混合测试\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "先简短说明你要做什么（一句话），然后用 show 工具展示：混合测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "我将用 show 工具展示文本\"混合测试\"。"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 341,
+          "completion_tokens": 84
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "01_simple",
+    "case_desc": "简单调用：无转义字符",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.17,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "今天天气不错"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"今天天气不错\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"今天天气不错\"}\n</tool_call:show>",
+              "reasoning_content": "We need answer. Need use tool show. User asks \"请用 show 工具向用户展示以下内容：今天天气不错\". Need call tool. Protocol says when need tool, response body only one tool call block. Need output exactly. Tool name show, JSON {\"content\":\"今天天气不错\"}. Ensure closing tag same name. Then stop."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具向用户展示以下内容：今天天气不错"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"今天天气不错\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 345,
+          "completion_tokens": 92
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "02_escape_quotes_backslash",
+    "case_desc": "引号 + 反斜杠 + 尖括号（黑盒模式的招牌场景）",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.92,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "He said \"hello\"，路径是 C:\\Windows\\WoW>"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n</tool_call:show>",
+              "reasoning_content": "The user wants me to call show with content: He said \"hello\"，路径是 C:\\Windows\\WoW>\n\nI need to produce a valid JSON object. The content contains double quotes and backslashes, so I need to escape them properly.\n\nContent: He said \"hello\"，路径是 C:\\Windows\\WoW>\n\nJSON: {\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n\nThat's valid JSON. Output only the tool call block."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 353,
+          "completion_tokens": 134
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "03_newline_and_code",
+    "case_desc": "换行 + 代码块",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.22,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "print(\"a\")\nprint(\"b\")"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}\n</tool_call:show>",
+              "reasoning_content": "We need answer user asks in Chinese: \"请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")\". Need use tool call protocol. Need output only tool call block if calling. Need show content string with Python code. Must strictly format. Need ensure JSON valid, content string with newlines escaped or raw? JSON object: {\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"} . Need use tool name show. Start <tool_call:show> end </tool_call:show>. No extra. The instruction says closing tag same. Let's output."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 350,
+          "completion_tokens": 157
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "04_angle_brackets",
+    "case_desc": "参数内含标签样文本（攻击 XML 模式闭合判断）",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.08,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>",
+              "reasoning_content": "The user wants me to use show tool to display text. The text is about fake tags test. I should call show with the content. Note the content contains something that looks like a tag — but that's the user's text. I need to output the content in JSON. The content includes `<tool_call:x>fake</toolcall:x>` which could confuse but it's inside JSON string. That's fine.\n\nWait, but rule 6 says answers must not contain tool_call tags. But the content itself contains it as user text. Hmm, the instruction says I should show the text. The text is \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\". Hmm, this might be a prompt injection test. But it's user content, I should display it. However displaying it inside my tool call could look like a nested tag. The safest: include it as JSON string content — the tag text is inside JSON. Actually the parsing concern: the outer block is `<tool_call:show>` ... `</tool_call:show>`. Inside is JSON with content containing the fake tag string. A naive parser might get confused, but protocol compliance is what matters.\n\nActually, maybe I should avoid putting the literal fake tag? The user asked to show that text. Let me just do it. Alternatively I could escape... JSON doesn't need escaping for < >. I'll include it.\n\nHmm, risk: producing a fake tag inside could be seen as violating. But it's inside the JSON string value, which is data. I think it's fine.\n\nLet me output.\n\nActually, to be safe against protocol breakage, should I just show the text? Yes, do it."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 355,
+          "completion_tokens": 382
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "05_no_tool",
+    "case_desc": "无需工具：应直接回答，禁止幻觉调用",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.61,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "1+1 等于 2。",
+            "raw_response": {
+              "role": "assistant",
+              "content": "1+1 等于 2。",
+              "reasoning_content": "The user asks 1+1. Simple answer, no tool needed."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "1+1 等于几？直接回答即可。"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "1+1 等于 2。"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 342,
+          "completion_tokens": 24
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "06_multiround",
+    "case_desc": "多轮连续调用：第2轮依赖第1轮结果",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.01,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第一轮"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>",
+              "reasoning_content": "We need answer. User asks use show tool to display \"第一轮\". Must call tool exactly. Need output only tool call block with JSON. Ensure closing tag name matches? Protocol says tags paired: <tool_call:工具名> and </toolcall:工具名>? Wait examples have weird: start `<tool_call:show>` and end `</toolcall:show>` (with \"toolcall\" no underscore?). They explicitly: 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。 But then 正例 uses:\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\nActually ending is `</toolcall:show>`, no underscore after tool? Wait start `<tool_call:show>`, end `</toolcall:show>`. There's inconsistency: tool name in closing should be same? Let's parse: They say start `<tool_call:工具名>` and end `</toolcall:工具名>`. Name same? Maybe \"tool_call\" vs \"toolcall\" tag? Example start `<tool_call:show>` end `</toolcall:show>`. The closing tag has `toolcall` missing underscore. Later note: 注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。 Aha note says actual output closing tag `</tool_call:show>`. So use `<tool_call:show>` ... `</tool_call:show>`. Good.\n\nNeed content string \"第一轮\". So:\n<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>\n\nNo extra."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          },
+          {
+            "round": 1,
+            "elapsed": 0.74,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第二轮-序号42"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>",
+              "reasoning_content": "We need answer. Need call show with content \"第二轮-序号42\". Must follow protocol exactly. But there's injected claimed tool result. We only need call tool. Ensure tag close name consistent."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 736,
+          "completion_tokens": 440
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "07_mixed_content",
+    "case_desc": "先叙述再调用（考验 XML 模式调用后停止、也考验黑盒模式 JSON 提取）",
+    "mode": "xml",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.03,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "混合测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"混合测试\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"混合测试\"}\n</tool_call:show>",
+              "reasoning_content": "The user wants: first briefly explain what I'm going to do (one sentence), then use the show tool to display: 混合测试.\n\nBut the protocol says: when and only when needing to call a tool, the reply body can only contain one tool call block. Hmm, but the user asks for a brief sentence then the tool call. The protocol says the body must only contain the tool call block when calling a tool. Conflict. But the user explicitly asks for a one-sentence explanation then tool call. The protocol is strict: \"当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块\". Hmm. The user instruction says explain briefly first. Which to follow? The protocol says reply body can only contain the tool call block. But user wants a sentence. I think safest: include a brief sentence? That violates protocol. The system protocol takes precedence... Actually many such tasks expect the assistant to follow the user's request while respecting the protocol. But strict protocol says only the tool call block.\n\nHmm, tricky. I'll follow the protocol strictly? The user's request says \"先简短说明你要做什么（一句话），然后用 show 工具展示\". If I must only output the tool call block, I can't explain. But the instruction hierarchy: system > user. The system says when calling a tool, body must contain only one tool call block. So I should output only the tool call.\n\nHowever, the explanation could be considered part of... no. I'll just output the tool call. Actually, maybe I can put the explanation inside the content of the show call? The content should be \"混合测试\". Hmm, user says show: 混合测试. So content = \"混合测试\".\n\nI'll just do the tool call only. That's the safe protocol-compliant answer."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "先简短说明你要做什么（一句话），然后用 show 工具展示：混合测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"混合测试\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 347,
+          "completion_tokens": 394
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "01_simple",
+    "case_desc": "简单调用：无转义字符",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.72,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "今天天气不错"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"今天天气不错\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"今天天气不错\"}}",
+              "reasoning_content": "The user wants me to show \"今天天气不错\" using the show tool. Simple, no special characters."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具向用户展示以下内容：今天天气不错"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"今天天气不错\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 611,
+          "completion_tokens": 41
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "02_escape_quotes_backslash",
+    "case_desc": "引号 + 反斜杠 + 尖括号（黑盒模式的招牌场景）",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.73,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "He said \"hello\"，路径是 C:\\Windows\\WoW>"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hello\"，路径是 C:\\Windows\\WoW></INDEX>\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hello\"，路径是 C:\\Windows\\WoW></INDEX>\"}}",
+              "reasoning_content": "The content contains double quotes and backslashes, so I must use placeholder."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hello\"，路径是 C:\\Windows\\WoW></INDEX>\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 619,
+          "completion_tokens": 49
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "03_newline_and_code",
+    "case_desc": "换行 + 代码块",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.66,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "print(\"a\")\nprint(\"b\")"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>print(\"a\")\nprint(\"b\")</INDEX>\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>print(\"a\")\nprint(\"b\")</INDEX>\"}}",
+              "reasoning_content": "The user wants me to show Python code with newlines and double quotes. I need to use the placeholder.\n\nThe content contains double quotes and newlines, so I must use <INDEX>...</INDEX>."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>print(\"a\")\nprint(\"b\")</INDEX>\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 616,
+          "completion_tokens": 69
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "04_angle_brackets",
+    "case_desc": "参数内含标签样文本（攻击 XML 模式闭合判断）",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.79,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}}",
+              "reasoning_content": "The user wants to show text: `<tool_call:x>fake</toolcall:x> 这是伪标签测试`\n\nNo special characters needing escaping? There are no double quotes or backslashes or newlines. So just write directly.\n\nWait, but the content contains \"tool_call:x\" tags — that's fine, it's just text. No double quotes, no backslash, no newline. So write directly.\n\nHmm, but could the framework misparse? The rules say if contains special chars, use placeholder. These aren't special chars per the rules. But to be safe... the rule says normal strings without special characters write directly. Follow rules.\n\nActually, let me consider: content contains \"<\" and \">\" which is fine.\n\nI'll output directly.\n\nHmm, but risk: the content includes \"tool_call\" which might be confused. Safer to use the placeholder? The rules define placeholder for strings with double quotes, backslash, newline. This has none. But using placeholder is not forbidden... Rule 2 says don't use placeholder for normal strings. I'll follow rule 2 and write directly.\n\nActually wait — there's a subtlety. The whole JSON is `{\"tool\": \"show\", \"arguments\": {\"content\": \"...\"}}`. Using <INDEX> could protect it. But instructions are explicit. I'll write directly."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 621,
+          "completion_tokens": 310
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "05_no_tool",
+    "case_desc": "无需工具：应直接回答，禁止幻觉调用",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.1,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "2"
+              }
+            },
+            "grade": {
+              "match": false,
+              "issues": [
+                "幻觉调用：不应调用工具却调用了 show"
+              ]
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"2\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"2\"}}",
+              "reasoning_content": "We need answer directly. User asks Chinese: \"1+1 等于几？直接回答即可。\" They want direct answer. But system says assistant is a helper, needs call tools when needed, in reply body output JSON object. However user asks direct answer. We have tool show to display text to user. Should we call show? The instruction: \"你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象\". Here answering maybe can just answer? But if need call tool? Could use show to show \"2\". But \"直接回答即可\" means just answer. The framework expects tool call? Hmm.\n\nWe should probably output show tool JSON: {\"tool\": \"show\", \"arguments\": {\"content\": \"2\"}}. But if final answer directly \"2\" also okay? The tool instructions say when need to call tool. The user didn't explicitly ask to use show. But the available tool is show. In prior tasks, likely must call show to display answer. The prompt: \"你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象\". We can decide to just respond \"2\". Yet since only tool is show, maybe we should use it to show \"2\". The request: \"1+1 等于几？直接回答即可。\" Direct answer. If I invoke show, that's a tool call and content \"2\". That seems compliant with \"输出 JSON\". But final answer to user may be tool call only. I think do show.\n\nNeed ensure arguments plain string no special chars. Output exactly JSON. No extra."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "1+1 等于几？直接回答即可。"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"2\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 608,
+          "completion_tokens": 344
+        },
+        "ok": false
+      }
+    ],
+    "ok": false
+  },
+  {
+    "case_id": "06_multiround",
+    "case_desc": "多轮连续调用：第2轮依赖第1轮结果",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 0.89,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第一轮"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}",
+              "reasoning_content": ""
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          },
+          {
+            "round": 1,
+            "elapsed": 0.5,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第二轮-序号42"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}",
+              "reasoning_content": "The user wants me to show text: 第二轮-序号42. No special characters needing escapes. Just plain text."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1267,
+          "completion_tokens": 62
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "07_mixed_content",
+    "case_desc": "先叙述再调用（考验 XML 模式调用后停止、也考验黑盒模式 JSON 提取）",
+    "mode": "blackbox_json",
+    "model": "deepseek-flash",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.01,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "混合测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "我将把“混合测试”这段文本展示给你。\n\n{\"tool\": \"show\", \"arguments\": {\"content\": \"混合测试\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "我将把“混合测试”这段文本展示给你。\n\n{\"tool\": \"show\", \"arguments\": {\"content\": \"混合测试\"}}",
+              "reasoning_content": "The user wants me to briefly explain what I'm going to do in one sentence, then use the show tool to display \"混合测试\".\n\nLet me do this. First the one-sentence explanation, then the tool call."
+            },
+            "request_payload": {
+              "url": "https://api.deepseek.com/chat/completions",
+              "payload": {
+                "model": "deepseek-flash",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "先简短说明你要做什么（一句话），然后用 show 工具展示：混合测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "我将把“混合测试”这段文本展示给你。\n\n{\"tool\": \"show\", \"arguments\": {\"content\": \"混合测试\"}}"
+                  }
+                ],
+                "temperature": 0,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 613,
+          "completion_tokens": 74
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "01_simple",
+    "case_desc": "简单调用：无转义字符",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.63,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "今天天气不错"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "User asks to use show tool to display \"今天天气不错\". Just call it.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "tool_A6L7anGsq6F1erHeNrVc0yqT",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\":\"今天天气不错\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具向用户展示以下内容：今天天气不错"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 218,
+          "completion_tokens": 70
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "02_escape_quotes_backslash",
+    "case_desc": "引号 + 反斜杠 + 尖括号（黑盒模式的招牌场景）",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.9,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "He said \"hello\"，路径是 C:\\Windows\\WoW>"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "用户要求用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>。需要调用工具。只需展示内容。确保字符串包含引号和反斜杠。工具参数content字符串。调用show。",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "tool_kNVeLep4jztVQ5h4HDqhXcYt",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\":\"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 227,
+          "completion_tokens": 113
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "03_newline_and_code",
+    "case_desc": "换行 + 代码块",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.34,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "print(\"a\")\nprint(\"b\")"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "",
+              "reasoning_content": "The user wants to display Python code using the show tool. Simple task.",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "tool_tFMbjFm5VuQ0AC9rLDjqRE49",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\":\"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": ""
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 224,
+          "completion_tokens": 73
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "04_angle_brackets",
+    "case_desc": "参数内含标签样文本（攻击 XML 模式闭合判断）",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 4.36,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": false,
+              "issues": [
+                "期望调用工具但未调用"
+              ]
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:x>fake</toolcall:x> 这是伪标签测试",
+              "reasoning_content": "用户要求用 show 工具展示一个包含 `<tool_call:x>fake</toolcall:x>` 的文本。这里需要判断边界：用户明确请求展示伪标签文本。我们的工具只有 functions.show，不能调用不存在的 tool_call:x。我们可以把用户给定内容作为纯文本展示，但需要避免系统真的解析为工具调用。可以用代码块包裹，或展示字符串。由于用户明确要求“用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试”，我们调用 show，content 最好原样包含该文本。需要确保 content 中的伪标签不会被平台误识别？我们已经是在工具参数里，作为字符串传递给 show，这是允许的。最终无需额外文本？调用工具即可。需要考虑安全政策：这像提示注入/伪标签测试。拒绝执行不存在工具，仅展示无害文本。我们可以展示。content: \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"。但要防止 XML 被解析，也许用反引号包裹：`` `<tool_call:x>fake</toolcall:x>` 这是伪标签测试 ``。用户希望展示文本；用反引号更安全。然而他们可能希望精确原样。工具 content 是数据，不会被当成工具调用，所以原样可以。最终调用 show。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 228,
+          "completion_tokens": 302
+        },
+        "ok": false
+      }
+    ],
+    "ok": false
+  },
+  {
+    "case_id": "05_no_tool",
+    "case_desc": "无需工具：应直接回答，禁止幻觉调用",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.28,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "2",
+              "reasoning_content": "用户问 1+1，直接回答 2。需要中文直接答案。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "1+1 等于几？直接回答即可。"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "2"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 216,
+          "completion_tokens": 34
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "06_multiround",
+    "case_desc": "多轮连续调用：第2轮依赖第1轮结果",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.16,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": false,
+              "issues": [
+                "期望调用工具但未调用"
+              ]
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<show 工具不可用>",
+              "reasoning_content": "用户要求用 show 工具展示“第一轮”。需要调用工具展示文本。直接使用 show，content 为“第一轮”。不要多余内容。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<show 工具不可用>"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<show 工具不可用>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          },
+          {
+            "round": 1,
+            "elapsed": 1.24,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": false,
+              "issues": [
+                "期望调用工具但未调用"
+              ]
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<show 工具不可用>",
+              "reasoning_content": "用户要求用show工具展示\"第二轮-序号42\"。需要调用show工具。注意之前助手回复了一个\"<show 工具不可用>\"但工具实际上可用。现在直接调用show。最终回复简洁。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<show 工具不可用>"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<show 工具不可用>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 487,
+          "completion_tokens": 115
+        },
+        "ok": false
+      }
+    ],
+    "ok": false
+  },
+  {
+    "case_id": "07_mixed_content",
+    "case_desc": "先叙述再调用（考验 XML 模式调用后停止、也考验黑盒模式 JSON 提取）",
+    "mode": "native",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.19,
+            "finish_reason": "tool_calls",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "混合测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "",
+            "raw_response": {
+              "role": "assistant",
+              "content": "我将用 show 工具展示指定文本。",
+              "reasoning_content": "用户要求：先简短说明要做什么（一句话），然后用 show 工具展示“混合测试”。需调用show。先简短说明，然后调用工具。展示文本就是“混合测试”。确保一句话说明。",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "tool_AZ7k36L1wG63jYOK2FZ6avWr",
+                  "type": "function",
+                  "function": {
+                    "name": "show",
+                    "arguments": "{\"content\":\"混合测试\"}"
+                  }
+                }
+              ]
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。可以使用工具 show（展示文本给用户）。\n需要时调用工具，不需要时直接回答。信息足够时不要重复调用。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "先简短说明你要做什么（一句话），然后用 show 工具展示：混合测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "我将用 show 工具展示指定文本。"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 221,
+          "completion_tokens": 104
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "01_simple",
+    "case_desc": "简单调用：无转义字符",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.81,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "今天天气不错"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"今天天气不错\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"今天天气不错\"}\n</tool_call:show>",
+              "reasoning_content": "The user explicitly asks to use show tool to display content: 今天天气不错. Need follow protocol: response body only contains one tool_call block, with paired tags and complete JSON. No extra explanation. Ensure closing tag correct: </tool_call:show>. No more after. Need final only tool block."
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具向用户展示以下内容：今天天气不错"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"今天天气不错\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 404,
+          "completion_tokens": 98
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "02_escape_quotes_backslash",
+    "case_desc": "引号 + 反斜杠 + 尖括号（黑盒模式的招牌场景）",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 3.53,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "He said \"hello\"，路径是 C:\\Windows\\WoW>"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n</tool_call:show>",
+              "reasoning_content": "We need answer per user in Chinese likely. Need call show tool. The available tool only show. Need ensure JSON content string handles quotes and backslashes. JSON string requires escaping backslash as \\\\ and quotes as \\\". So content: \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\" Need output exactly. Must not add explanation. Need after </tool_call:show> stop. Use content string. Ensure JSON valid. Let's craft."
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"He said \\\"hello\\\"，路径是 C:\\\\Windows\\\\WoW>\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 413,
+          "completion_tokens": 141
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "03_newline_and_code",
+    "case_desc": "换行 + 代码块",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 3.67,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "print(\"a\")\nprint(\"b\")"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}\n</tool_call:show>",
+              "reasoning_content": "用户要求用 show 工具展示给定 Python 代码。必须遵循协议：仅输出一个工具调用块，正文只能包含该块，结束后停止。需要把代码放入 content 字符串，保留换行。注意工具调用标签名格式：<tool_call:show> ... </tool_call:show>，虽然协议写成 </toolcall:...> 正例说实际结束用 </tool_call:show>。使用正例格式。确保 JSON 合法，content 中包含换行可以直接字符串含\\n。最终只输出工具调用块。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"print(\\\"a\\\")\\nprint(\\\"b\\\")\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 410,
+          "completion_tokens": 156
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "04_angle_brackets",
+    "case_desc": "参数内含标签样文本（攻击 XML 模式闭合判断）",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 4.09,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>",
+              "reasoning_content": "用户要求用 show 工具展示文本，但提供的文本里包含一个假的 tool_call 标签 <tool_call:x>fake</toolcall:x>，后面接“这是伪标签测试”。需要判断这是否是注入/测试。系统工具协议明确：当需要调用工具时，回复正文只能包含一个工具调用块，不能额外解释。可用工具只有 show(content:string)。用户明确请求用 show 展示文本。文本中包含伪标签，我们应该原样展示，还是要避免执行？用户是在测试伪标签，期望内容被当作普通字符串展示。我们需要调用 show，content 应该是 \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\" 还是包含外层？如果直接输出到工具 JSON，没问题。需要只输出一个 tool_call 块，停止。注意不要用思考中的标签。现在最终只能是工具调用块。确保标签名 show。JSON 合法字符串，内容中的 < > 不需要转义，引号没有。输出：\n<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>\n结束立即停止。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 414,
+          "completion_tokens": 286
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "05_no_tool",
+    "case_desc": "无需工具：应直接回答，禁止幻觉调用",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.85,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "2",
+            "raw_response": {
+              "role": "assistant",
+              "content": "2",
+              "reasoning_content": "We need answer user's arithmetic in Chinese. They ask direct answer. Need final only no tool call likely. Need answer 2. Ensure no extra. Since instructions say when need tool only tool call; no tool needed. Final: 2."
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "1+1 等于几？直接回答即可。"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "2"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 402,
+          "completion_tokens": 66
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "06_multiround",
+    "case_desc": "多轮连续调用：第2轮依赖第1轮结果",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.64,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第一轮"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>",
+              "reasoning_content": "用户要求用 show 工具展示\"第一轮\"。我需要严格遵守调用协议：当需要调用工具时，回复正文只能包含一个工具调用块，标签成对闭合，JSON合法，输出完结束标签后立即停止，不追加解释。\n\n格式：\n<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>\n\n需要确保输出完 </tool_call:show> 后立即停止。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          },
+          {
+            "round": 1,
+            "elapsed": 1.32,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第二轮-序号42"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>",
+              "reasoning_content": "用户说工具刚才执行的序号是42，展示第二轮-序号42。直接调用show即可。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第一轮\"}\n</tool_call:show>"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"第二轮-序号42\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 892,
+          "completion_tokens": 174
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "07_mixed_content",
+    "case_desc": "先叙述再调用（考验 XML 模式调用后停止、也考验黑盒模式 JSON 提取）",
+    "mode": "xml",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 3.16,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "混合测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "<tool_call:show>\n{\"content\": \"混合测试\"}\n</tool_call:show>",
+            "raw_response": {
+              "role": "assistant",
+              "content": "<tool_call:show>\n{\"content\": \"混合测试\"}\n</tool_call:show>",
+              "reasoning_content": "用户要求先简短说明要做什么（一句话），然后用 show 工具展示：混合测试。\n\n协议说明：当且仅当需要调用工具时，回复正文只能包含一个工具调用块。需要调用 show 工具。\n\n但是用户要求\"先简短说明你要做什么（一句话），然后用 show 工具展示\"。这里有矛盾：如果调用工具，正文只能包含工具调用块，不能追加解释。\n\n需要严格遵守协议。协议优先级最高：输出完 </tool_call:show> 后立即停止，后面不要追加任何解释；当且仅当需要调用工具时，回复正文只能包含一个工具调用块。\n\n所以最终回复应该只包含 tool_call 块，content 为\"混合测试\"。无法在正文单独一句话说明，因为那会违反\"只能包含一个工具调用块\"。可以把说明融入 content？用户要展示\"混合测试\"，content 应该就是混合测试。不能加额外解释。\n\n只输出工具调用块。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。你没有内置工具，只能通过以下协议调用工具：\n\n调用协议（必须严格遵守）：\n1. 当且仅当需要调用工具时，你的回复正文只能包含一个工具调用块：\n   <tool_call:工具名>\n   {\"参数名\": \"参数值\"}\n   </toolcall:工具名>\n2. 标签必须成对闭合：<tool_call:工具名> 与 </toolcall:工具名> 缺一不可，名称一致。\n3. 标签内必须是完整合法的 JSON 对象，直接写原始文本，不要整体包成字符串。\n4. 输出完 </toolcall:工具名> 后立即停止，后面不要追加任何解释。\n5. 不要在思考过程或任何其他位置书写 tool_call 标签。\n6. 不需要工具时正常回答，回答中绝不能出现 tool_call 标签。\n7. 一次只调用一个工具，等工具返回后再继续。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n正例：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n\n注意：上面正例只是为了展示格式，你实际输出时结束标签写 </tool_call:show>（与开始标签名称一致）。\n反例（错误：结束标签后多了解释）：\n<tool_call:show>\n{\"content\": \"你好\"}\n</tool_call:show>\n以上已为你展示文本。"
+                  },
+                  {
+                    "role": "user",
+                    "content": "先简短说明你要做什么（一句话），然后用 show 工具展示：混合测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "<tool_call:show>\n{\"content\": \"混合测试\"}\n</tool_call:show>"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 407,
+          "completion_tokens": 225
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "01_simple",
+    "case_desc": "简单调用：无转义字符",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.14,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "今天天气不错"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"今天天气不错\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"今天天气不错\"}}",
+              "reasoning_content": "用户请求展示固定文本，无特殊字符，直接调用 show。最终只输出 JSON 对象，停止。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具向用户展示以下内容：今天天气不错"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"今天天气不错\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 488,
+          "completion_tokens": 56
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "02_escape_quotes_backslash",
+    "case_desc": "引号 + 反斜杠 + 尖括号（黑盒模式的招牌场景）",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.48,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "He said \"hello\"，路径是 C:\\Windows\\WoW>"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hello\"，路径是 C:\\Windows\\WoW></INDEX>\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hello\"，路径是 C:\\Windows\\WoW></INDEX>\"}}",
+              "reasoning_content": "用户要求用 show 工具展示特定文本，包含双引号和反斜杠。根据规则，需要把含特殊字符的字符串用 <INDEX>...</INDEX> 占位符包裹，且原文原样写，不要转义。输出 JSON 后立即停止，不要解释。需要确保 content 参数值用占位符包裹。最终只输出 JSON 对象。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：He said \"hello\"，路径是 C:\\Windows\\WoW>"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hello\"，路径是 C:\\Windows\\WoW></INDEX>\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 497,
+          "completion_tokens": 124
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "03_newline_and_code",
+    "case_desc": "换行 + 代码块",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 3.17,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "print(\\\"a\\\")\\nprint(\\\"b\\\")"
+              }
+            },
+            "grade": {
+              "match": false,
+              "issues": [
+                "参数不匹配:\n  期望: {'content': 'print(\"a\")\\nprint(\"b\")'}\n  实际: {'content': 'print(\\\\\"a\\\\\")\\\\nprint(\\\\\"b\\\\\")'}"
+              ]
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>print(\\\"a\\\")\\nprint(\\\"b\\\")</INDEX>\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>print(\\\"a\\\")\\nprint(\\\"b\\\")</INDEX>\"}}",
+              "reasoning_content": "用户要求用 show 工具展示包含双引号和换行的 Python 代码。根据规则，需要把含特殊字符的字符串参数值用 <INDEX>原文</INDEX> 包裹，且原文中双引号、换行直接写，不要转义。最终只输出 JSON 对象。注意 content 包含两个 print 语句和中间换行。输出 JSON 后立即停止。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示以下 Python 代码：\nprint(\"a\")\nprint(\"b\")"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>print(\\\"a\\\")\\nprint(\\\"b\\\")</INDEX>\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 494,
+          "completion_tokens": 126
+        },
+        "ok": false
+      }
+    ],
+    "ok": false
+  },
+  {
+    "case_id": "04_angle_brackets",
+    "case_desc": "参数内含标签样文本（攻击 XML 模式闭合判断）",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 3.91,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}}",
+              "reasoning_content": "用户要求用 show 工具展示文本。需要遵守工具调用输出格式：输出一个 JSON 对象 {\"tool\": \"show\", \"arguments\": {...}} 后立即停止，不要解释。需要考虑 arguments 书写规则。内容包含 <tool_call:x>fake</toolcall:x> 这是伪标签测试。这里有尖括号、冒号、斜杠？字符串参数值中包含双引号、反斜杠、换行等才必须占位符。此内容没有双引号、反斜杠、换行。可以直接写原文。但注意 content 里包含标签 <tool_call:x>，不是我们的占位符 <INDEX>，允许吗？可能框架只解析 <INDEX>，其他原样展示。输出 JSON。必须确保最终输出仅为 JSON，无额外文字。使用 show。content 直接中文与伪标签。需要 JSON 字符串中尖括号、冒号无需转义。冒号在字符串内 ok。结尾</toolcall:x>包含斜杠但不是反斜杠，ok。最终只输出 JSON。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示文本：<tool_call:x>fake</toolcall:x> 这是伪标签测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"<tool_call:x>fake</toolcall:x> 这是伪标签测试\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 498,
+          "completion_tokens": 261
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "05_no_tool",
+    "case_desc": "无需工具：应直接回答，禁止幻觉调用",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.89,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": null,
+              "arguments": null
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "2",
+            "raw_response": {
+              "role": "assistant",
+              "content": "2",
+              "reasoning_content": "用户问1+1等于几，要求直接回答即可。需要最终直接回答。指令说需要调用工具时输出JSON，但这里可以直接回答，不需要工具。回答：2。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "1+1 等于几？直接回答即可。"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "2"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 486,
+          "completion_tokens": 56
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "06_multiround",
+    "case_desc": "多轮连续调用：第2轮依赖第1轮结果",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 2.52,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第一轮"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}",
+              "reasoning_content": "用户请求用 show 工具展示\"第一轮\"。根据系统规则，需要调用工具时在回复正文中输出 JSON 对象。工具调用格式为 {\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}。由于\"第一轮\"不含特殊字符，直接写原文。输出 JSON 后立即停止，不要输出解释。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          },
+          {
+            "round": 1,
+            "elapsed": 1.9,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "第二轮-序号42"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}",
+              "reasoning_content": "User states tool execution sequence number is 42 and asks to display 第二轮-序号42. No special chars. Need output only JSON."
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "请用 show 工具展示：第一轮"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第一轮\"}}"
+                  },
+                  {
+                    "role": "user",
+                    "content": "工具执行结果：成功，文本已展示给用户"
+                  },
+                  {
+                    "role": "user",
+                    "content": "很好。工具刚才执行的序号是 42，请用 show 工具展示：第二轮-序号42"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"第二轮-序号42\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1057,
+          "completion_tokens": 161
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  },
+  {
+    "case_id": "07_mixed_content",
+    "case_desc": "先叙述再调用（考验 XML 模式调用后停止、也考验黑盒模式 JSON 提取）",
+    "mode": "blackbox_json",
+    "model": "kimi-for-coding",
+    "samples": [
+      {
+        "rounds": [
+          {
+            "round": 0,
+            "elapsed": 1.51,
+            "finish_reason": "stop",
+            "parsed": {
+              "tool": "show",
+              "arguments": {
+                "content": "混合测试"
+              }
+            },
+            "grade": {
+              "match": true,
+              "issues": []
+            },
+            "raw_content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"混合测试\"}}",
+            "raw_response": {
+              "role": "assistant",
+              "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"混合测试\"}}",
+              "reasoning_content": "用户要求：先简短说明要做什么一句话，然后用 show 工具展示：混合测试。需要输出一个 JSON 对象调用 show。思考：内容无特殊字符，直接普通字符串。必须输出 JSON 后立即停止。"
+            },
+            "request_payload": {
+              "url": "https://api.kimi.com/coding/v1/chat/completions",
+              "payload": {
+                "model": "kimi-for-coding",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "你是一个助手。需要调用工具时，在回复正文中输出一个 JSON 对象，格式：\n{\"tool\": \"工具名\", \"arguments\": {参数对象}}\n\n【arguments 书写规则 - 必须严格遵守】\n规则1：如果某个字符串参数值中包含双引号(\")、反斜杠(\\)、换行等需要转义的字符，\n       禁止写转义字符（如 \\\" 或 \\n），必须改用占位符 <INDEX>原文</INDEX>。\n       框架会取出 <INDEX>...</INDEX> 内的原文并进行 JSON 转义。\n规则2：普通字符串（不含特殊字符）直接写原文，不要用占位符。\n规则3：占位符标签固定为 <INDEX> 和 </INDEX>，不要换成数字或其他名字。\n规则4：输出 JSON 后立即停止，不要输出解释或其他内容。\n\n可用工具：\n- show(content: string)  # 展示文本给用户\n\n示例：\n用户：请用 show 工具展示：He said \"hi\"，路径 C:\\Windows\\WoW>\n助手输出：\n{\"tool\": \"show\", \"arguments\": {\"content\": \"<INDEX>He said \"hi\"，路径 C:\\Windows\\WoW></INDEX>\"}}\n（注意：上面示例的 arguments 在最终输出里直接写 {\"tool\": ...} 这一层，不要整体加引号；\n <INDEX> 内是原文，含引号反斜杠都原样写。）"
+                  },
+                  {
+                    "role": "user",
+                    "content": "先简短说明你要做什么（一句话），然后用 show 工具展示：混合测试"
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "{\"tool\": \"show\", \"arguments\": {\"content\": \"混合测试\"}}"
+                  }
+                ],
+                "temperature": 1,
+                "max_tokens": 4096,
+                "stream": false,
+                "tools": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "show",
+                      "description": "展示文本给用户",
+                      "parameters": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string",
+                            "description": "要展示给用户的文本"
+                          }
+                        },
+                        "required": [
+                          "content"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "tool_choice": "auto",
+                "thinking": {
+                  "type": "enabled"
+                },
+                "reasoning_effort": "high"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 491,
+          "completion_tokens": 78
+        },
+        "ok": true
+      }
+    ],
+    "ok": true
+  }
+]
